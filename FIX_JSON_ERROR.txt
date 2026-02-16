@@ -1,0 +1,125 @@
+╔═══════════════════════════════════════════════════════════╗
+║  🔧 แก้ไขปัญหา JSON Error                                 ║
+║     "Unexpected token '<'"                                ║
+╚═══════════════════════════════════════════════════════════╝
+
+⚠️ ปัญหา
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Error: SyntaxError: Unexpected token '<', "<br /> <b>"... is not valid JSON
+
+
+🎯 สาเหตุ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHP มี Error และส่ง HTML error message กลับมา
+แทนที่จะเป็น JSON
+
+
+✅ วิธีแก้ไข (ทำตามลำดับ)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣ ตรวจสอบ MySQL ทำงานหรือไม่
+   
+   ✓ เปิด XAMPP Control Panel
+   ✓ ตรวจสอบว่า MySQL เป็นสีเขียว (Start แล้ว)
+   ✓ ถ้ายังไม่ Start → คลิก "Start" ที่ MySQL
+
+
+2️⃣ ตรวจสอบสร้างฐานข้อมูลแล้วหรือยัง
+   
+   ✓ เปิด http://localhost/phpmyadmin
+   ✓ ดูว่ามี database ชื่อ "nakhonpathom_college" หรือไม่
+   
+   ❌ ถ้ายังไม่มี:
+      1. คลิก "Import" ที่เมนูบน
+      2. เลือกไฟล์ database.sql
+      3. คลิก "Go"
+      4. รอจนเสร็จ → จะมี database ใหม่
+
+
+3️⃣ ทดสอบการเชื่อมต่อ
+   
+   ✓ เปิดไฟล์: http://localhost/Ncme/test_connection.php
+   ✓ ดูผลการทดสอบ
+   
+   ถ้าขึ้น "✅ ระบบพร้อมใช้งาน!" แสดงว่าโอเค
+
+
+4️⃣ รีเฟรชหน้าเว็บ
+   
+   ✓ กด Ctrl + F5 (Hard Refresh)
+   ✓ หรือกด F5 หลายๆ ครั้ง
+
+
+5️⃣ ล้าง Browser Cache
+   
+   ✓ Chrome: Ctrl + Shift + Delete
+   ✓ เลือก "Cached images and files"
+   ✓ คลิก "Clear data"
+
+
+📋 Checklist
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+□ ติดตั้ง XAMPP แล้ว
+□ Start Apache และ MySQL แล้ว
+□ วางไฟล์ไว้ที่ C:\xampp\htdocs\Ncme\
+□ Import database.sql แล้ว
+□ มี database ชื่อ nakhonpathom_college
+□ ทดสอบ test_connection.php แล้ว
+
+
+🔍 ตรวจสอบเพิ่มเติม
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ถ้ายังมีปัญหา ให้ทดสอบแต่ละ API:
+
+1. http://localhost/Ncme/api_students.php
+   → ควรเห็น JSON (ไม่ใช่ error)
+
+2. http://localhost/Ncme/api_executives.php
+   → ควรเห็น JSON
+
+3. http://localhost/Ncme/api_staff.php
+   → ควรเห็น JSON
+
+4. http://localhost/Ncme/api_departments.php
+   → ควรเห็น JSON
+
+
+💡 เคล็ดลับ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ ใช้ Browser Console (F12) ดู error
+✓ ดูแท็บ Network → คลิก api_... → ดู Response
+✓ ถ้าเห็น HTML แทน JSON แสดงว่ามี error
+
+
+🎯 Error ที่พบบ่อย
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. "Access denied for user 'root'"
+   → รหัสผ่าน MySQL ไม่ถูกต้อง
+   → แก้ไขใน config.php
+
+2. "Unknown database 'nakhonpathom_college'"
+   → ยังไม่ได้ Import database.sql
+   → Import ใน phpMyAdmin
+
+3. "Table doesn't exist"
+   → Import database.sql ไม่สำเร็จ
+   → ลอง Import ใหม่
+
+
+📞 ยังแก้ไม่ได้?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ส่ง Screenshot ของ:
+1. XAMPP Control Panel (แสดง Status)
+2. phpMyAdmin (แสดง Database list)
+3. Browser Console (F12 → Console tab)
+4. หน้า test_connection.php
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✨ ปัญหานี้แก้ได้! | 2025
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,198 @@
+╔═══════════════════════════════════════════════════════════╗
+║  🔴 แก้ไข Error 500 (Internal Server Error)              ║
+║     วิธีแก้แบบละเอียด                                     ║
+╚═══════════════════════════════════════════════════════════╝
+
+⚠️ ปัญหา
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Failed to load resource: the server responded with a status of 500
+Error: Unexpected end of JSON input
+
+
+🎯 สาเหตุ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHP มี Error ร้ายแรง มักเกิดจาก:
+1. ยังไม่ได้ Import database.sql
+2. ฐานข้อมูลหรือตารางหายไป
+3. MySQL ไม่ทำงาน
+4. Syntax Error ในโค้ด PHP
+
+
+✅ วิธีแก้ไข (ทำตามขั้นตอน)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔹 ขั้นตอนที่ 1: ทดสอบระบบ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+เปิดไฟล์นี้ในเบราว์เซอร์:
+
+   http://localhost/Ncme/debug_api.php
+
+ดูผลการทดสอบ:
+
+   ถ้าเห็น ✅ ทุกข้อ → ดีแล้ว ไปขั้นตอน 4
+   ถ้าเห็น ❌ → อ่านข้อความ error และแก้ไขตามขั้นตอนถัดไป
+
+
+🔹 ขั้นตอนที่ 2: เช็ค MySQL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. เปิด XAMPP Control Panel
+2. ตรวจสอบ MySQL:
+   
+   ✅ ถ้าเป็นสีเขียว (Running) → ดี
+   ❌ ถ้าเป็นสีแดง → คลิก "Start"
+   
+3. ถ้า Start ไม่ได้:
+   - Port 3306 อาจถูกใช้งาน
+   - คลิก "Config" → my.ini
+   - เปลี่ยน port จาก 3306 เป็น 3307
+   - Save แล้ว Start ใหม่
+
+
+🔹 ขั้นตอนที่ 3: Import ฐานข้อมูล
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+สิ่งสำคัญที่สุด!
+
+1. เปิด: http://localhost/phpmyadmin
+
+2. เช็คว่ามี database ชื่อ "nakhonpathom_college" หรือไม่
+   
+   ❌ ถ้าไม่มี → ทำขั้นตอน 3-4
+   ✅ ถ้ามี → ดูว่ามีตารางข้างใน 6 ตาราง หรือไม่
+   
+3. คลิก "Import" ที่เมนูบน
+
+4. เลือกไฟล์ "database.sql"
+
+5. คลิก "Go" หรือ "ดำเนินการ"
+
+6. รอจนเสร็จ (จะขึ้นข้อความสีเขียว)
+
+7. เช็คว่ามี database ใหม่ชื่อ "nakhonpathom_college"
+
+8. คลิกเข้าไปดู ต้องมี 6 ตาราง:
+   ✓ executives
+   ✓ staff
+   ✓ students
+   ✓ student_list
+   ✓ departments
+   ✓ student_activities
+
+
+🔹 ขั้นตอนที่ 4: ทดสอบ API แต่ละตัว
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+เปิดแต่ละ URL นี้ในเบราว์เซอร์:
+
+1. http://localhost/Ncme/api_executives.php
+   → ต้องเห็น JSON {"success":true, "data":[...]}
+
+2. http://localhost/Ncme/api_staff.php
+   → ต้องเห็น JSON
+
+3. http://localhost/Ncme/api_students.php
+   → ต้องเห็น JSON
+
+4. http://localhost/Ncme/api_departments.php
+   → ต้องเห็น JSON
+
+❌ ถ้าเห็น error หรือหน้าว่างเปล่า:
+   → ไปขั้นตอน 5
+
+
+🔹 ขั้นตอนที่ 5: เปิด Debug Mode
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. เปิดไฟล์ "config.php" ด้วย Text Editor
+
+2. หาบรรทัดนี้:
+   $debug_mode = 0;
+
+3. เปลี่ยนเป็น:
+   $debug_mode = 1;
+
+4. Save ไฟล์
+
+5. ลองเปิด API อีกครั้ง จะเห็น error message ชัดเจนขึ้น
+
+6. อ่าน error message แล้วแก้ไข
+
+7. เสร็จแล้วเปลี่ยนกลับเป็น:
+   $debug_mode = 0;
+
+
+🔹 ขั้นตอนที่ 6: Clear Cache & Refresh
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. กด Ctrl + Shift + Delete
+2. เลือก "Cached images and files"
+3. คลิก "Clear data"
+4. ปิด Browser
+5. เปิดใหม่
+6. กด Ctrl + F5 (Hard Reload)
+
+
+📋 Checklist การแก้ปัญหา
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ทำตามลำดับ ติ๊กเมื่อเสร็จแล้ว:
+
+□ ทดสอบ debug_api.php แล้ว
+□ MySQL ทำงานอยู่ (สีเขียว)
+□ Import database.sql แล้ว
+□ มี database ชื่อ nakhonpathom_college
+□ มีตาราง 6 ตาราง
+□ ทดสอบ API ทุกตัวแล้ว (เห็น JSON)
+□ Clear Cache แล้ว
+□ Hard Reload แล้ว (Ctrl + F5)
+
+
+🔍 Debug ขั้นสูง
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ถ้ายังไม่ได้:
+
+1. เปิด Browser Console (F12)
+2. ไปแท็บ "Network"
+3. Refresh หน้าเว็บ
+4. คลิกที่ api_executives.php (สีแดง)
+5. ดูแท็บ "Response"
+6. จะเห็น error message ที่แท้จริง
+
+
+💡 Error ที่พบบ่อย
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. "Access denied for user 'root'"
+   → รหัสผ่าน MySQL ผิด
+   → แก้ใน config.php
+
+2. "Unknown database 'nakhonpathom_college'"
+   → ยังไม่ Import database.sql
+   → Import ใน phpMyAdmin
+
+3. "Table 'executives' doesn't exist"
+   → Import ไม่สำเร็จ หรือไม่ครบ
+   → ลบ database แล้ว Import ใหม่
+
+4. "Connection refused"
+   → MySQL ไม่ทำงาน
+   → Start MySQL ใน XAMPP
+
+
+🆘 ยังแก้ไม่ได้?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ส่ง Screenshot ของ:
+
+1. XAMPP Control Panel (แสดง MySQL Status)
+2. phpMyAdmin (แสดง Database list)
+3. หน้า debug_api.php
+4. Browser Console (F12 → Network → Response)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✨ ทำตาม Checklist ให้ครบ จะแก้ได้! | 2025
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
